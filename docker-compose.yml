@@ -1,0 +1,17 @@
+services:
+  studio:
+    image: ghcr.io/ningzimu/convert-hub:${IMAGE_TAG:-latest}
+    pull_policy: always
+    container_name: convert-hub
+    restart: always
+    ports:
+      - "${WEB_PORT:-8090}:8080"
+    environment:
+      - PORT=8080
+      - REMOTE_CONFIG_URL=${REMOTE_CONFIG_URL:-https://raw.githubusercontent.com/ningzimu/rule_scripts/refs/heads/main/config/acl4ssr_modify.ini}
+      - ENGINE_READY_TIMEOUT_MS=${ENGINE_READY_TIMEOUT_MS:-180000}
+    volumes:
+      - studio-data:/app/data
+
+volumes:
+  studio-data:

@@ -1,0 +1,19 @@
+{
+  "name": "convert-hub",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:ui": "npm --prefix frontend run build",
+    "prepare": "husky",
+    "lint:commit": "commitlint --from=HEAD~20 --to=HEAD",
+    "test": "node --test",
+    "start": "node backend/index.mjs",
+    "dev": "node backend/index.mjs"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "husky": "^9.1.7"
+  }
+}
