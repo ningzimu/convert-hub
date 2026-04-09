@@ -12,10 +12,69 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build grouped release notes
+        id: notes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          current_tag="${GITHUB_REF_NAME}"
+          previous_tag="$(git tag --sort=-version:refname | grep -Fxv "${current_tag}" | head -n 1 || true)"
+          range="${current_tag}"
+
+          if [ -n "${previous_tag}" ]; then
+            range="${previous_tag}..${current_tag}"
+          fi
+
+          features="$(git log --pretty=format:'%s' "${range}" | grep -E '^feat(\(.+\))?: ' || true)"
+          fixes="$(git log --pretty=format:'%s' "${range}" | grep -E '^fix(\(.+\))?: ' || true)"
+          others="$(git log --pretty=format:'%s' "${range}" | grep -Ev '^(feat|fix)(\(.+\))?: ' || true)"
+
+          {
+            echo "body<<EOF"
+            echo "## Features"
+            if [ -n "${features}" ]; then
+              while IFS= read -r line; do
+                [ -n "${line}" ] && echo "- ${line}"
+              done <<< "${features}"
+            else
+              echo "- None"
+            fi
+            echo
+            echo "## Bug Fixes"
+            if [ -n "${fixes}" ]; then
+              while IFS= read -r line; do
+                [ -n "${line}" ] && echo "- ${line}"
+              done <<< "${fixes}"
+            else
+              echo "- None"
+            fi
+            echo
+            echo "## Others"
+            if [ -n "${others}" ]; then
+              while IFS= read -r line; do
+                [ -n "${line}" ] && echo "- ${line}"
+              done <<< "${others}"
+            else
+              echo "- None"
+            fi
+            echo
+            echo "Docker image:"
+            echo "- ghcr.io/${{ github.repository_owner }}/convert-hub:${{ github.ref_name }}"
+            if [ -n "${previous_tag}" ]; then
+              echo
+              echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${previous_tag}...${current_tag}"
+            fi
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
-          body: |
-            Docker image:
-            - ghcr.io/${{ github.repository_owner }}/convert-hub:${{ github.ref_name }}
+          generate_release_notes: false
+          body: ${{ steps.notes.outputs.body }}
