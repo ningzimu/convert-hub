@@ -157,6 +157,7 @@ body.dark-mode {
 .dark-mode .el-button--primary {
   background-color: var(--accent) !important;
   border-color: var(--accent) !important;
+  color: #fff !important;
   border-radius: 6px !important;
 }
 
@@ -166,8 +167,14 @@ body.dark-mode {
   border-color: var(--accent-hover) !important;
 }
 
-.dark-mode .el-button--primary.is-disabled {
-  opacity: 0.5 !important;
+.dark-mode .el-button--primary.is-disabled,
+.dark-mode .el-button--primary.is-disabled:hover,
+.dark-mode .el-button--primary.is-disabled:focus,
+.dark-mode .el-button--primary.is-disabled:active {
+  background-color: #1e3a8a !important;
+  border-color: #1e3a8a !important;
+  color: #93c5fd !important;
+  opacity: 1 !important;
 }
 
 .dark-mode .el-button--default {

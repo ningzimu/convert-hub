@@ -2,7 +2,7 @@
   <div class="page-container studio-page">
     <section class="studio-hero">
       <div class="hero-copy">
-        <p class="eyebrow">{{ app.productTagline }}</p>
+        <p v-if="app.productTagline" class="eyebrow">{{ app.productTagline }}</p>
         <h1>{{ app.productName }}</h1>
         <p v-if="app.description" class="hero-description">
           {{ app.description }}
@@ -168,7 +168,6 @@
               </el-button>
               <el-button
                 type="primary"
-                plain
                 size="medium"
                 :loading="loading1"
                 :disabled="!customSubUrl"

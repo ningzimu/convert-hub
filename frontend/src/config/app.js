@@ -4,7 +4,7 @@ const trimTrailingSlash = (value) => String(value || '').replace(/\/$/, '')
 
 export const appConfig = {
   productName: 'Convert Hub',
-  productTagline: '一体化订阅转换工作台',
+  productTagline: '',
   description: '',
   engineBaseUrl: trimTrailingSlash(runtimeConfig.ENGINE_BASE_URL || '/api'),
   shortenerEndpoint: trimTrailingSlash(runtimeConfig.SHORTENER_API_URL || '/s/short'),
