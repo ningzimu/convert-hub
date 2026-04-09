@@ -37,33 +37,27 @@ jobs:
 
           {
             echo "body<<EOF"
-            echo "## Features"
             if [ -n "${features}" ]; then
+              echo "## Features"
               while IFS= read -r line; do
                 [ -n "${line}" ] && echo "- ${line}"
               done <<< "${features}"
-            else
-              echo "- None"
+              echo
             fi
-            echo
-            echo "## Bug Fixes"
             if [ -n "${fixes}" ]; then
+              echo "## Bug Fixes"
               while IFS= read -r line; do
                 [ -n "${line}" ] && echo "- ${line}"
               done <<< "${fixes}"
-            else
-              echo "- None"
+              echo
             fi
-            echo
-            echo "## Others"
             if [ -n "${others}" ]; then
+              echo "## Others"
               while IFS= read -r line; do
                 [ -n "${line}" ] && echo "- ${line}"
               done <<< "${others}"
-            else
-              echo "- None"
+              echo
             fi
-            echo
             echo "Docker image:"
             echo "- ghcr.io/${{ github.repository_owner }}/convert-hub:${{ github.ref_name }}"
             if [ -n "${previous_tag}" ]; then
