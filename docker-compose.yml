@@ -10,6 +10,11 @@ services:
       - PORT=8080
       - REMOTE_CONFIG_URL=${REMOTE_CONFIG_URL:-https://raw.githubusercontent.com/ningzimu/rule_scripts/refs/heads/main/config/acl4ssr_modify.ini}
       - ENGINE_READY_TIMEOUT_MS=${ENGINE_READY_TIMEOUT_MS:-180000}
+      - ENGINE_ENABLE_CACHE=${ENGINE_ENABLE_CACHE:-false}
+      - ENGINE_CACHE_SUBSCRIPTION=${ENGINE_CACHE_SUBSCRIPTION:-0}
+      - ENGINE_CACHE_CONFIG=${ENGINE_CACHE_CONFIG:-0}
+      - ENGINE_CACHE_RULESET=${ENGINE_CACHE_RULESET:-0}
+      - ENGINE_SERVE_CACHE_ON_FETCH_FAIL=${ENGINE_SERVE_CACHE_ON_FETCH_FAIL:-false}
     volumes:
       - studio-data:/app/data
 

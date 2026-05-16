@@ -7,6 +7,7 @@ import { proxyToEngine } from './lib/proxy.mjs'
 import { EngineRuntime } from './lib/runtime.mjs'
 import { ShortLinkStore } from './lib/shortlinks.mjs'
 import { EngineState } from './lib/engine-state.mjs'
+import { applyEngineProfileOverrides } from './lib/engine-profile.mjs'
 
 const engine = config.engineMode === 'embedded'
   ? new EngineRuntime({
@@ -38,6 +39,14 @@ async function bootstrapEmbeddedEngine() {
   engineState.markStarting()
 
   try {
+    const overriddenKeys = await applyEngineProfileOverrides({
+      workingDirectory: config.engineWorkingDirectory
+    })
+
+    if (overriddenKeys.length > 0) {
+      console.log(`applied engine profile overrides: ${overriddenKeys.join(', ')}`)
+    }
+
     await engine.start()
     const version = await fetchEngineVersionText()
     engineState.markReady(version.trim())
