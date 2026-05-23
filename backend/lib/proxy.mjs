@@ -28,13 +28,23 @@ export function buildEngineRequestHeaders(headers, { host, port }) {
   }
 }
 
-export function proxyToEngine(request, response, { host, port }) {
+export function buildEngineRequestPath(requestUrl, { remoteConfigUrl } = {}) {
+  const url = new URL(requestUrl, 'http://127.0.0.1')
+
+  if (url.pathname === '/api/sub' && remoteConfigUrl && !url.searchParams.has('config')) {
+    url.searchParams.set('config', remoteConfigUrl)
+  }
+
+  return `${url.pathname.replace(/^\/api/, '') || '/'}${url.search}`
+}
+
+export function proxyToEngine(request, response, { host, port, remoteConfigUrl }) {
   const proxyRequest = http.request(
     {
       hostname: host,
       port,
       method: request.method,
-      path: request.url.replace(/^\/api/, '') || '/',
+      path: buildEngineRequestPath(request.url, { remoteConfigUrl }),
       headers: buildEngineRequestHeaders(request.headers, { host, port })
     },
     (proxyResponse) => {

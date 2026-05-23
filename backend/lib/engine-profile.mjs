@@ -6,7 +6,8 @@ const ENV_TO_TOML_KEY = {
   ENGINE_CACHE_SUBSCRIPTION: 'cache_subscription',
   ENGINE_CACHE_CONFIG: 'cache_config',
   ENGINE_CACHE_RULESET: 'cache_ruleset',
-  ENGINE_SERVE_CACHE_ON_FETCH_FAIL: 'serve_cache_on_fetch_fail'
+  ENGINE_SERVE_CACHE_ON_FETCH_FAIL: 'serve_cache_on_fetch_fail',
+  ENGINE_UPDATE_RULESET_ON_REQUEST: 'update_ruleset_on_request'
 }
 
 function parseBoolean(value) {
@@ -34,7 +35,11 @@ function parseNumber(value) {
 }
 
 function parseTomlValue(key, value) {
-  if (key === 'enable_cache' || key === 'serve_cache_on_fetch_fail') {
+  if (
+    key === 'enable_cache' ||
+    key === 'serve_cache_on_fetch_fail' ||
+    key === 'update_ruleset_on_request'
+  ) {
     return parseBoolean(value)
   }
 

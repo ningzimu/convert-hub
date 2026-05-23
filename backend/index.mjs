@@ -183,7 +183,8 @@ async function handleRequest(request, response) {
 
     proxyToEngine(request, response, {
       host: config.engineHost,
-      port: config.enginePort
+      port: config.enginePort,
+      remoteConfigUrl: config.remoteConfigUrl
     })
     return
   }
